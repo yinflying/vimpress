@@ -1,0 +1,13 @@
+xiaohua
+12345678
+http://xxxxx.com/xmlrpc.php
+/home/xiaohua/Documents/blog_local/
+
+说明：
+xiaohua: 用户名(博客用户名)
+12335678: 密码
+http://xxxxx.com/xmlrpc.php :xmlrpc.php的位置，其中xxxxx.com为域名或IP地址
+/home/xiaohua/Documents/blog_local/ :本地博客保存的位置
+
+注意: 前四行为读取的配置内容，不要多加任何一个空格，包括行尾
+将该文件命名为vimpress_config,然后修改./plugin/blog.vim中的config所在位置即可。
