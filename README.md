@@ -6,3 +6,20 @@
 3、修改快捷键
 ```
 注意：本地打开直接采用了NERDTree的插件。使用方法也基本和原vimpress一致。
+
+基本的命令如下:
+```
+ :BListL
+   Lists all articles in the blog
+ :BListR
+   Lists all articles in the local
+ :BNew
+   Opens page to write new article
+ :BOpen <id>
+  Opens the article <id> for edition
+ :BSend
+   Saves the article to the blog and local
+ :BSave
+   Save the article in the local (do not send to blog)
+```
+
