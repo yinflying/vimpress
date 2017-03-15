@@ -12,8 +12,8 @@
 "
 " You should have received a copy of the GNU General Public License
 " along with this program; if not, write to the Free Software Foundation,
-" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
-" 
+" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+"
 " Maintainer:	Adrien Friggeri <adrien@friggeri.net>
 " URL:		http://www.friggeri.net/projets/vimblog/
 " Version:	0.9
@@ -33,14 +33,14 @@
 " ":BSave"
 "   Save the article in the local
 "
-" Configuration : 
+" Configuration :
 "   Edit the "Settings" section (starts at line 51).
 "
-"   If you wish to use UTW tags, you should install the following plugin : 
+"   If you wish to use UTW tags, you should install the following plugin :
 "   http://blog.circlesixdesign.com/download/utw-rpc-autotag/
 "   and set "enable_tags" to 1 on line 50
 "
-" Usage : 
+" Usage :
 "   Just fill in the blanks, do not modify the highlighted parts and everything
 "   should be ok.
 "
@@ -69,20 +69,21 @@ blog_password = ''
 blog_url = ''
 blog_local = ''
 
-#or use extra file to set 
-user_home = os.path.expanduser('~')
-linenum = 1;
-for line in open(user_home + '/.vim/bundle/vimpress/vimpress_config'):
-    if(linenum == 1):
-        blog_username = line;
-    if(linenum == 2):
-        blog_password = line;
-    if(linenum == 3):
-        blog_url = line;
-    if(linenum == 4):
-        blog_local = line;
-        break;
-    linenum = linenum + 1
+#or use extra file to set
+if(blog_username == ''):
+    user_home = os.path.expanduser('~')
+    linenum = 1;
+    for line in open(user_home + '/.vim/bundle/vimpress/vimpress_config'):
+        if(linenum == 1):
+            blog_username = line.strip();
+        if(linenum == 2):
+            blog_password = line.strip();
+        if(linenum == 3):
+            blog_url = line.strip();
+        if(linenum == 4):
+            blog_local = line.strip();
+            break;
+        linenum = linenum + 1
 
 #####################
 # Do not edit below #
@@ -112,19 +113,19 @@ def blog_send_post():
     while not vim.current.buffer[start].startswith('"'+what):
       start +=1
     return start
-  def get_meta(what): 
+  def get_meta(what):
     start = get_line(what)
     end = start + 1
     while not vim.current.buffer[end][0] == '"':
       end +=1
     return " ".join(vim.current.buffer[start:end]).split(":")[1].strip()
-      
+
   strid = get_meta("StrID")
   title = get_meta("Title")
   cats = [i.strip() for i in get_meta("Cats").split(",")]
   if enable_tags:
     tags = get_meta("Tags")
-  
+
   text_start = 0
   while not vim.current.buffer[text_start] == "\"========== Content ==========":
     text_start +=1
@@ -165,7 +166,7 @@ def blog_new_post():
     s = ""
     for i in l:
       s = s + (i["description"].encode("utf-8"))+", "
-    if s != "": 
+    if s != "":
       return s[:-2]
     else:
       return s
