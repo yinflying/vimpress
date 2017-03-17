@@ -107,7 +107,6 @@ def blog_edit_on():
       vim.command('unmap '+i)
 
 def blog_send_post():
-  vim.command("BSave")
   def get_line(what):
     start = 0
     while not vim.current.buffer[start].startswith('"'+what):
@@ -158,6 +157,7 @@ def blog_send_post():
       blog_password, post, 1)
 
   vim.command('set nomodified')
+  vim.command("BSave")
 
 
 def blog_new_post():
