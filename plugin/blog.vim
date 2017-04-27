@@ -24,8 +24,10 @@
 "   Lists all articles in the blog
 " ":BListR"
 "   Lists all articles in the local
-" ":BNew"
-"   Opens page to write new article
+" ":BNewL"
+"   Opens page to write new article form Local template
+" ":BNewR"
+"   Opens page to write new article form Remote
 " ":BOpen <id>"
 "   Opens the article <id> for edition
 " ":BSend"
@@ -48,7 +50,8 @@
 "   增加本地功能
 
 command! -nargs=0 BListR exec("py blog_list_posts()")
-command! -nargs=0 BNew exec("py blog_new_post()")
+command! -nargs=0 BNewR exec("py blog_new_post()")
+command! -nargs=0 BNewL exec("py blog_new_postL()")
 command! -nargs=0 BSend exec("py blog_send_post()")
 command! -nargs=0 BSave exec("py blog_save_posts()")
 command! -nargs=0 BListL exec("py blog_list_local_posts()")
@@ -261,3 +264,34 @@ def blog_list_local_posts():
         vim.command("Explore "+blog_local)
     except:
         sys.stderr.write("An error has occured")
+
+def blog_new_postL():
+    def blog_get_template():
+        l = handler.getCategories('', blog_username, blog_password)
+        s = ""
+        for i in l:
+            s = s + (i["description"].encode("utf-8"))+", "
+        if s != "":
+            return s[:-2]
+        else:
+            return s
+    template_file = blog_local + "backup/blog_template.md"
+    if os.path.exists(template_file):
+        shutil.copy(template_file,template_file+'.tmp')
+        vim.command("e "+template_file+".tmp")
+        vim.command("set syntax=blogsyntax")
+    else:
+        print template_file
+        output = file(template_file,'w')
+        print output
+        output.write("\"=========== Meta ============\n")
+        output.write("\"StrID : \n")
+        output.write("\"Title : \n")
+        output.write("\"Cats  : "+blog_get_template() + "\n")
+        if enable_tags:
+            output.write("\"Tags  : \n")
+        output.write("\"========== Content ==========\n")
+        output.close()
+        shutil.copy(template_file,template_file+".tmp")
+        vim.command("e "+template_file+".tmp")
+        vim.command("set syntax=blogsyntax")
