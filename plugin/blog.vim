@@ -71,9 +71,9 @@ blog_username = ''
 blog_password = ''
 blog_url = ''
 blog_local = ''
-blog_file_url = 'http://yinflying.top/wp-content/uploads/'
-ssh_media_dir='guest@yinflying.top:/var/www/wp-content/uploads/'
-local_media_dir='/home/yf/Documents/blog_local/data/'
+blog_file_url = ''
+ssh_media_dir=''
+local_media_dir=''
 
 #or use extra file to set
 if(blog_username == ''):
