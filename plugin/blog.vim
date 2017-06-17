@@ -6,8 +6,7 @@
 " any later version.
 "
 " This program is distributed in the hope that it will be useful,
-" but WITHOUT ANY WARRANTY; without even the implied warranty of
-" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+" but WITHOUT ANY WARRANTY; without even the implied warranty of " MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 " GNU General Public License for more details.
 "
 " You should have received a copy of the GNU General Public License
@@ -34,6 +33,8 @@
 "   Saves the article to the blog
 " ":BSave"
 "   Save the article in the local
+" ":BChangeL"
+"   upload the file to server via ssh, and make a local backup
 "
 " Configuration :
 "   Edit the "Settings" section (starts at line 51).
@@ -46,8 +47,6 @@
 "   Just fill in the blanks, do not modify the highlighted parts and everything
 "   should be ok.
 "
-"修正：
-"   增加本地功能
 
 command! -nargs=0 BListR exec("py blog_list_posts()")
 command! -nargs=0 BNewR exec("py blog_new_post()")
@@ -56,6 +55,7 @@ command! -nargs=0 BSend exec("py blog_send_post()")
 command! -nargs=0 BSave exec("py blog_save_posts()")
 command! -nargs=0 BListL exec("py blog_list_local_posts()")
 command! -nargs=1 BOpen exec('py blog_open_post(<f-args>)')
+command! -nargs=0 BChangeL exec("py blog_change_links()")
 python <<EOF
 # -*- coding: utf-8 -*-
 import urllib , urllib2 , vim , xml.dom.minidom , xmlrpclib , sys , string , re
@@ -71,6 +71,9 @@ blog_username = ''
 blog_password = ''
 blog_url = ''
 blog_local = ''
+blog_file_url = 'http://yinflying.top/wp-content/uploads/'
+ssh_media_dir='guest@yinflying.top:/var/www/wp-content/uploads/'
+local_media_dir='/home/yf/Documents/blog_local/data/'
 
 #or use extra file to set
 if(blog_username == ''):
@@ -85,8 +88,31 @@ if(blog_username == ''):
             blog_url = line.strip();
         if(linenum == 4):
             blog_local = line.strip();
+        if(linenum == 5):
+            blog_file_url = line.strip();
+        if(linenum == 6):
+            ssh_media_dir = line.strip();
+        if(linenum == 7):
+            local_media_dir = line.strip();
             break;
         linenum = linenum + 1
+
+#####################
+# Do not edit below #
+#####################
+
+handler = xmlrpclib.ServerProxy(blog_url).metaWeblog
+edit = 1
+
+def blog_edit_off():
+  global edit
+  if edit:
+    edit = 0
+    for i in ["i","a","s","o","I","A","S","O"]:
+      vim.command('map '+i+' <nop>')
+
+def blog_edit_on():
+  global edit
 
 #####################
 # Do not edit below #
@@ -295,3 +321,37 @@ def blog_new_postL():
         shutil.copy(template_file,template_file+".tmp")
         vim.command("e "+template_file+".tmp")
         vim.command("set syntax=blogsyntax")
+
+def blog_change_links():
+    i = 0;
+    pattern = re.compile(r'\(file://.*?\)');
+    while(1):
+        try:
+            line = vim.current.buffer[i];
+            while(1):
+                try:
+                    localfile = pattern.search(line).group();
+                    file_full_name = localfile[8:len(localfile)-1];
+                    if os.path.exists(file_full_name):
+                        filename = os.path.basename(file_full_name);
+                        current_time = time.localtime(time.time())
+                        str_year = "{:0>4d}".format(current_time.tm_year);
+                        str_mon = "{:0>2d}".format(current_time.tm_mon);
+                        os.system('scp ' + file_full_name + ' ' + ssh_media_dir+str_year+'/'+str_mon+'/')
+                        #print 'scp ' + file_full_name + ' ' + ssh_media_dir+str_year+'/'+str_mon+'/'
+                        os.system('mkdir -p '+local_media_dir+str_year+'/'+str_mon)
+                        #print 'mkdir -p '+local_media_dir+str_year+'/'+str_mon
+                        os.system('cp ' + file_full_name + ' ' + local_media_dir+str_year+'/'+str_mon+'/')
+                        #print 'cp ' + file_full_name + ' ' + local_media_dir+str_year+'/'+str_mon+'/'
+                        replacefile = blog_file_url + str_year + '/' + str_mon + '/' + filename
+                        vim.current.buffer[i] = line.replace(localfile,'('+replacefile+')')
+                        line = vim.current.buffer[i];
+                    else:
+                        sys.stderr.write("No File:"+file_full_name + "!  ")
+                        break
+                except:
+                    break
+            i = i + 1
+        except:
+            break
+

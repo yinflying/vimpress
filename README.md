@@ -1,10 +1,11 @@
-这是vimpress一个修改版本，主要是针对`vim + markdown + wordpress `的用户
+这是vimpress一个修改版本，主要是针对`vim + markdown + wordpress+linux`的用户
 保持了vimpress基本功能不变的基础上，增加的有：
 ```
 1、markdown高亮
 2、本地保存和备份
-3、简化命令
-4、独立配置文件
+3
+4、简化命令
+5、独立配置文件
 ```
 # 一、安装方法:
 ## 1.1 使用vundle进行安装(推荐)
