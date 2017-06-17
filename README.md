@@ -47,4 +47,6 @@ let g:netrw_sort_by        = "time"     "使用时间排序
    将博客发送到wordpress上，并且保存到本地
  :BSave
    将博客保存到本地并将之前的备份(保存到./backup下)
+ :BChangeL
+   将博客内部形如(file:///home/xxxx/xxxx.png)上传并转换为URL
 ```
