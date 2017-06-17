@@ -3,10 +3,12 @@
 ```
 1、markdown高亮
 2、本地保存和备份
-3
+3、自动上传本地文件并转换为相应的URL
 4、简化命令
 5、独立配置文件
 ```
+更详细的说明参见: [http://yinflying.top](http://yinflying.top/604-vimpress%e4%b8%aa%e4%ba%ba%e4%bf%ae%e8%ae%a2%e7%89%88%e8%af%b4%e6%98%8e/)
+
 # 一、安装方法:
 ## 1.1 使用vundle进行安装(推荐)
 ```
