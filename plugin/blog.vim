@@ -79,7 +79,7 @@ local_media_dir=''
 if(blog_username == ''):
     user_home = os.path.expanduser('~')
     linenum = 1;
-    for line in open(user_home + '/.vim/bundle/vimpress/vimpress_config'):
+    for line in open(vim.vars['VIMPRESS_CONFIG_FILE']):
         if(linenum == 1):
             blog_username = line.strip();
         if(linenum == 2):
@@ -338,11 +338,8 @@ def blog_change_links():
                         str_year = "{:0>4d}".format(current_time.tm_year);
                         str_mon = "{:0>2d}".format(current_time.tm_mon);
                         os.system('scp ' + file_full_name + ' ' + ssh_media_dir+str_year+'/'+str_mon+'/')
-                        #print 'scp ' + file_full_name + ' ' + ssh_media_dir+str_year+'/'+str_mon+'/'
                         os.system('mkdir -p '+local_media_dir+str_year+'/'+str_mon)
-                        #print 'mkdir -p '+local_media_dir+str_year+'/'+str_mon
                         os.system('cp ' + file_full_name + ' ' + local_media_dir+str_year+'/'+str_mon+'/')
-                        #print 'cp ' + file_full_name + ' ' + local_media_dir+str_year+'/'+str_mon+'/'
                         replacefile = blog_file_url + str_year + '/' + str_mon + '/' + filename
                         vim.current.buffer[i] = line.replace(localfile,'('+replacefile+')')
                         line = vim.current.buffer[i];

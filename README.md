@@ -26,6 +26,10 @@ vim vimpress_config
 自然是vim插件的常规的安装方式，此处不再多述
 
 ## 1.3 推荐配置
+必须的配置(指定配置文件的位置)
+```
+let g:VIMPRESS_CONFIG_FILE = '/home/xxx/.vim/vundle/vimpress/vimpress_config'
+```
 由于本vimpress打开本地文件的方式是使用`netrw`文件管理器，所以其常用的排序方式并不好用，故最好在`~/.vimrc`中添加下面的配置(时间倒序排列的方式)：
 ```
 "vimpress 基本配置
