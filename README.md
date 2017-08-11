@@ -7,7 +7,7 @@
 4、简化命令
 5、独立配置文件
 ```
-更详细的说明参见: [http://yinflying.top](http://yinflying.top/604-vimpress%e4%b8%aa%e4%ba%ba%e4%bf%ae%e8%ae%a2%e7%89%88%e8%af%b4%e6%98%8e/)
+更详细的说明参见: [http://yinflying.top](http://yinflying.top/2017/06/604)
 
 TODO:
 
