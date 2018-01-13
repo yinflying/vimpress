@@ -271,12 +271,13 @@ def blog_save_posts():
     filename = vim.current.buffer[2]
     fileID = fileID[8:]
     fileID = "".join(fileID.split())
-    filename = filename[8:]
+    filename = filename[8:].strip()
     if ( fileID == "" ):
         fileID = "LocalDraft"
     filename = fileID + "_" + filename + ".md"
     isBackupDir = os.path.exists(blog_local + "backup")
-    filename = "".join(filename.split())
+    filename = filename.replace(" ","_")
+    filename = filename.replace("\"","")
     ctime = time.strftime('%Y%m%d-%H%M%S',time.localtime(time.time()))
     if not isBackupDir:
         os.makedirs(blog_local + "backup")
